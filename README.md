@@ -3,7 +3,7 @@ CS1660 Final Project
 
 ## Group Members:
 - Chris White
--
+- Mia Miller
 -
 -
 -
