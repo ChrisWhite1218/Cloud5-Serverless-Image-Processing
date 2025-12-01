@@ -5,7 +5,7 @@ CS1660 Final Project
 - Chris White
 - Mia Miller
 - Hao Wang
--
+- Maia Harmon
 -
 
 ## Project Description
