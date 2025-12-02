@@ -47,3 +47,6 @@ CS1660 Final Project
 - **M3** — Step 3: Refactor the Lambda handler to use the new AI module.
 - **M4** — Step 4: Update the container/Dockerfile, manage dependencies, push to ECR.
 - **M5** — Steps 5–6: Rewire S3/SNS permissions and own validation/monitoring rollout.
+
+## Work Flow
+![Work flow diagram](mermaid.png)
