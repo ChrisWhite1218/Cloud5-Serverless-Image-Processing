@@ -49,3 +49,4 @@ CS1660 Final Project
 - **M5** — Steps 5–6: Rewire S3/SNS permissions and own validation/monitoring rollout.
 
 ## Work Flow
+![Work flow diagram](mermaid.png)
