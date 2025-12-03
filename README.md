@@ -1,11 +1,23 @@
 # Cloud5-Serverless-Image-Processing
 CS1660 Final Project
 
-## Project Overview
+## Group Members:
+- Chris White
+- Mia Miller
+- Hao Wang
+- Maia Harmon
+-
 
-### Overview of the Project
-- When someone uploads a short text prompt to cloud storage, the system automatically turns that prompt into an AI-generated image.
-- A small cloud function reads the prompt, asks an AI image service (for example, Bedrock or OpenAI) to create the picture, and saves the finished image plus a small metadata file back to cloud storage.
+## Project Description
+
+### Serverless Image Processing Service
+Develop a web application that allows users to upload and process images.
+• Suggested AWS Services: S3, Lambda, API Gateway, DynamoDB, Cognito,
+CloudFront, Step Functions
+• Users upload images to S3
+• AI image service processes images
+• Provide downloadable URLs for processed images
+• Track processing history per user
 
 ## Event-Driven Flow
 
@@ -50,3 +62,17 @@ CS1660 Final Project
 
 ## Work Flow
 ![Work flow diagram](mermaid.png)
+
+
+## TODO
+- Create S3 Buckets for image uploads
+- Set up authentication layer with Cognito(?)
+- - Create an account and log in
+- - Alter the state of the application (e.g., save preferences, create content)
+- - Log out and log back in to see their persisted data
+- Set up API Gateway
+- - I think making the images downloadable is part of this
+- Set up Lambda Functions for image processing
+- Set up DynamoDB
+- Set up CloudFront
+- Step Functions
