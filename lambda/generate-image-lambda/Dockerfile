@@ -4,12 +4,12 @@ FROM public.ecr.aws/lambda/python:3.13
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
 # copy requirements file
-COPY pyproject.toml ${LAMBDA_TASK_ROOT}/
+COPY lambda/generate-image-lambda/pyproject.toml ${LAMBDA_TASK_ROOT}/
 
 # install dependencies
 RUN uv sync
 # copy function code
-COPY handler.py ${LAMBDA_TASK_ROOT}/
+COPY lambda/generate-image-lambda/handler.py ${LAMBDA_TASK_ROOT}/
 COPY ai_helper/ ${LAMBDA_TASK_ROOT}/ai_helper/
 # sync the project
 RUN uv sync --locked --no-install-project --no-editable
