@@ -1,4 +1,5 @@
 import json
+import logging 
 from ai_helper import generate_image
 import io
 import boto3
@@ -15,10 +16,6 @@ def upload_to_s3(bucket, key, data, content_type='image/png'): # uploads ai imag
     s3 = boto3.client('s3')
     s3.put_object(Bucket=bucket, Key=key, Body=data, ContentType=content_type)
 
-def upload_metadata_to_s3(bucket, key, metadata, content_type='application/json'):
-    s3 = boto3.client('s3')
-    s3.put_object(Bucket=bucket, Key=key, Body=json.dumps(metadata), ContentType=content_type)
-
 def api_handler(event, context):
     """
     Lambda parses the prompt, calls the AI image-generation API, stores the resulting image in processed/ai/, and logs prompt metadata.
@@ -28,6 +25,8 @@ def api_handler(event, context):
 
     processed_count = 0
     failed_count = 0
+
+    logger = logging.getLogger()
 
     # iterate over all SNS records
     for sns_record in event.get('Records', []):
@@ -58,7 +57,7 @@ def api_handler(event, context):
                     print(f"Uploaded to: {output_key}")
 
                     # save metadata 
-                    result.metadata = {
+                    metadata = {
                         "prompt": result.prompt, 
                         "model": result.model, 
                         "size": result.size, 
@@ -68,9 +67,10 @@ def api_handler(event, context):
                     }
                     # save revised prompt if present
                     if result.revised_prompt:
-                       result.metadata["revised_prompt"] = result.revised_prompt
+                       metadata["revised_prompt"] = result.revised_prompt
 
-                    upload_metadata_to_s3(bucket_name, output_key, result.metadata) # unsure about this function
+                    # Log metadata
+                    logger.info("Metadata: %s", metadata)
                     
                     processed_count += 1
 
