@@ -64,14 +64,14 @@ Develop a web application that allows users to upload and process images.
 
 
 ## TODO
-- Create S3 Buckets for image uploads
-- Set up authentication layer with Cognito(?)
-- - Create an account and log in
-- - Alter the state of the application (e.g., save preferences, create content)
-- - Log out and log back in to see their persisted data
-- Set up API Gateway
-- - I think making the images downloadable is part of this
+- ~~Create S3 Buckets for image uploads~~
 - Set up Lambda Functions for image processing
-- Set up DynamoDB
+- - ~~Implement Lambda code~~
+- - Create Lambda in AWS
+- - Modify lambda-image-processor role to have access to cloud5-serverless-image-processing bucket
+- - Subscribe Lambda to SNS topic
+- Configure S3 Bucket to send notifications to SNS topic when files are uploaded
+
+- Set up CloudWatch
 - Set up CloudFront
 - Step Functions
