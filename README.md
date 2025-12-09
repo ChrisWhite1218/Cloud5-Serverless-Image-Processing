@@ -6,7 +6,7 @@ CS1660 Final Project
 - Mia Miller
 - Hao Wang
 - Maia Harmon
--
+- Gleb Ksianevich
 
 ## Project Description
 
