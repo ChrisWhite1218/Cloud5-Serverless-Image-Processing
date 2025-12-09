@@ -12,8 +12,7 @@ CS1660 Final Project
 
 ### Serverless Image Processing Service
 Develop a web application that allows users to upload and process images.
-• Suggested AWS Services: S3, Lambda, API Gateway, DynamoDB, Cognito,
-CloudFront, Step Functions
+• Suggested AWS Services: S3, Lambda, IAM, SNS, ECR, CloudWatch, Secrets Manager
 • Users upload images to S3
 • AI image service processes images
 • Provide downloadable URLs for processed images
