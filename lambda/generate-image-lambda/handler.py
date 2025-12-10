@@ -1,9 +1,13 @@
 import json
-import logging 
-from ai_helper import generate_image
+import logging
+import os
 import io
-import boto3
 from pathlib import Path
+
+import boto3
+from ai_helper import generate_image
+
+from secret_loader import load_openai_key
 
 def download_json_from_s3(bucket, key): # dowloads json prompt from s3
     s3 = boto3.client('s3')
@@ -20,6 +24,12 @@ def api_handler(event, context):
     """
     Lambda parses the prompt, calls the AI image-generation API, stores the resulting image in processed/ai/, and logs prompt metadata.
     """
+    # Ensure OPENAI_API_KEY is available for the helper; load from Secrets Manager if missing.
+    if not os.getenv("OPENAI_API_KEY"):
+        secret_name = os.getenv("OPENAI_API_SECRET_NAME", "cloud5/openai/api-key")
+        region_name = os.getenv("AWS_REGION", "us-east-1")
+        os.environ["OPENAI_API_KEY"] = load_openai_key(secret_name, region_name)
+
     print("AI Image Lambda triggered")
     print(f"Event received with {len(event.get('Records', []))} SNS records")
 
