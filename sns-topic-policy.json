@@ -11,7 +11,7 @@
       "Resource": "arn:aws:sns:us-east-1:373962339856:cloud5-generate-image-topic",
       "Condition": {
         "ArnLike": {
-          "aws:SourceArn": "arn:aws:s3:::cloud5-image-service"
+          "aws:SourceArn": "arn:aws:s3:::cloud5-serverless-image-processing/*"
         }
       }
     }
