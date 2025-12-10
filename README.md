@@ -6,14 +6,13 @@ CS1660 Final Project
 - Mia Miller
 - Hao Wang
 - Maia Harmon
--
+- Gleb Ksianevich
 
 ## Project Description
 
 ### Serverless Image Processing Service
 Develop a web application that allows users to upload and process images.
-• Suggested AWS Services: S3, Lambda, API Gateway, DynamoDB, Cognito,
-CloudFront, Step Functions
+• Suggested AWS Services: S3, Lambda, IAM, SNS, ECR, CloudWatch, Secrets Manager
 • Users upload images to S3
 • AI image service processes images
 • Provide downloadable URLs for processed images
@@ -65,14 +64,14 @@ CloudFront, Step Functions
 
 
 ## TODO
-- Create S3 Buckets for image uploads
-- Set up authentication layer with Cognito(?)
-- - Create an account and log in
-- - Alter the state of the application (e.g., save preferences, create content)
-- - Log out and log back in to see their persisted data
-- Set up API Gateway
-- - I think making the images downloadable is part of this
+- ~~Create S3 Buckets for image uploads~~
 - Set up Lambda Functions for image processing
-- Set up DynamoDB
+- - ~~Implement Lambda code~~
+- - Create Lambda in AWS
+- - Modify lambda-image-processor role to have access to cloud5-serverless-image-processing bucket
+- - Subscribe Lambda to SNS topic
+- ~~Configure S3 Bucket to send notifications to SNS topic when files are uploaded~~
+- Set up CLI for users to interact with the system
+- Set up CloudWatch
 - Set up CloudFront
 - Step Functions
