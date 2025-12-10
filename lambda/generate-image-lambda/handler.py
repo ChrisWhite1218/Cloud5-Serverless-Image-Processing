@@ -38,7 +38,16 @@ def api_handler(event, context):
     """
     Lambda parses the prompt, calls the AI image-generation API, stores the resulting image in processed/ai/, and logs prompt metadata.
     """
+<<<<<<< HEAD
     ensure_openai_key()
+=======
+    # Ensure OPENAI_API_KEY is available for the helper; load from Secrets Manager if missing.
+    if not os.getenv("OPENAI_API_KEY"):
+        secret_name = os.getenv("OPENAI_API_SECRET_NAME", "cloud5/openai/api-key")
+        region_name = os.getenv("AWS_REGION", "us-east-1")
+        os.environ["OPENAI_API_KEY"] = load_openai_key(secret_name, region_name)
+
+>>>>>>> 06344d567f5b74dac7862425543ea098c1b0feda
     print("AI Image Lambda triggered")
     print(f"Event received with {len(event.get('Records', []))} SNS records")
 
