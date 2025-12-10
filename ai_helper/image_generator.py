@@ -2,6 +2,7 @@ import base64
 import logging
 import os
 import time
+import urllib.request
 from dataclasses import dataclass, field
 from typing import Dict, Optional
 
@@ -71,7 +72,7 @@ class OpenAIImageGenerator:
         model: Optional[str] = None,
         size: Optional[str] = None,
         user: Optional[str] = None,
-        response_format: str = "b64_json",
+        response_format: Optional[str] = None,
     ) -> ImageGenerationResult:
         if not prompt or not prompt.strip():
             raise AIImageGenerationError("Prompt must be a non-empty string.")
@@ -85,8 +86,9 @@ class OpenAIImageGenerator:
             "prompt": prompt,
             "size": chosen_size,
             "n": 1,
-            "response_format": response_format,
         }
+        if response_format:
+            payload["response_format"] = response_format
         if chosen_user:
             payload["user"] = chosen_user
 
@@ -158,10 +160,16 @@ class OpenAIImageGenerator:
         try:
             data = response.data[0]  # first (and only) generated image
             b64_payload = getattr(data, "b64_json", None)
-            if not b64_payload:
-                raise AIImageGenerationError("OpenAI response missing image payload.")
+            url_payload = getattr(data, "url", None)
 
-            image_bytes = base64.b64decode(b64_payload)
+            if b64_payload:
+                image_bytes = base64.b64decode(b64_payload)
+            elif url_payload:
+                # Fallback: download image from URL
+                with urllib.request.urlopen(url_payload) as resp:
+                    image_bytes = resp.read()
+            else:
+                raise AIImageGenerationError("OpenAI response missing image payload.")
             created = getattr(data, "created", None) or getattr(response, "created", 0)
             seed = getattr(data, "seed", None)
             revised_prompt = getattr(data, "revised_prompt", None)
