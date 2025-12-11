@@ -1,9 +1,11 @@
 use std::{env, fs::File, io::Write};
 
-use anyhow::{anyhow, Context, Result};
+use anyhow::{bail, Context, Result};
 use clap::Parser;
 use reqwest::blocking::Client;
 use serde::{Deserialize, Serialize};
+use base64::Engine;
+use base64::engine::general_purpose::STANDARD as B64;
 
 #[derive(Parser, Debug)]
 #[command(about = "Minimal CLI to request an image from our API (no OpenAI key needed)")]
@@ -36,19 +38,31 @@ fn main() -> Result<()> {
 
     let client = Client::new();
 
-    let resp: ApiResponse = client
+    let response = client
         .post(api_url)
         .json(&PromptRequest {
             prompt: &args.prompt,
         })
         .send()
-        .context("Failed to call backend API")?
-        .error_for_status()
-        .context("Backend API returned an error")?
-        .json()
+        .context("Failed to call backend API")?;
+
+    let status = response.status();
+    let body = response
+        .text()
+        .context("Failed to read backend response body")?;
+
+    if !status.is_success() {
+        bail!("Backend returned {} with body: {}", status, body);
+    }
+    if body.trim().is_empty() {
+        bail!("Backend returned empty body");
+    }
+
+    let resp: ApiResponse = serde_json::from_str(&body)
         .context("Failed to parse backend response")?;
 
-    let image_bytes = base64::decode(&resp.image_base64)
+    let image_bytes = B64
+        .decode(&resp.image_base64)
         .context("Failed to decode image_base64 from backend")?;
 
     let mut file = File::create(&args.output).context("Failed to create output file")?;

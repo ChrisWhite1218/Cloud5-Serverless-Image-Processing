@@ -178,3 +178,16 @@ def http_handler(event, context):
             "headers": {"Content-Type": "application/json"},
             "body": json.dumps({"error": str(exc)}),
         }
+
+
+def main_handler(event, context):
+    """
+    Router: if the event looks like SNS/S3 (Records with Sns), use api_handler;
+    otherwise treat as HTTP and use http_handler.
+    """
+    records = event.get("Records")
+    if records and isinstance(records, list):
+        first = records[0]
+        if isinstance(first, dict) and "Sns" in first:
+            return api_handler(event, context)
+    return http_handler(event, context)

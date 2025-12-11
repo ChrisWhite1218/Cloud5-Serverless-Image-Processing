@@ -19,4 +19,4 @@ RUN uv sync --locked --no-install-project --no-editable
 ENV PYTHONPATH="${LAMBDA_TASK_ROOT}/.venv/lib/python3.13/site-packages"
 
 # set the CMD to your handler
-CMD ["handler.api_handler"]
+CMD ["handler.main_handler"]
