@@ -63,6 +63,14 @@ Develop a web application that allows users to upload and process images.
 ![Work flow diagram](mermaid.png)
 
 
+## Setup & Run
+- Prereqs: AWS us-east-1, S3 bucket (e.g., `cloud5-serverless-image-processing`), SNS topic to trigger the Lambda, ECR repo, Secrets Manager secret `cloud5/openai/api-key` (value = raw `sk-...` or `{"api_key":"sk-..."}`), Lambda env: `OPENAI_API_SECRET_NAME=cloud5/openai/api-key`, `AWS_REGION=us-east-1`.
+- Deploy: set GitHub secrets `AWS_ACCESS_KEY_ID` / `AWS_SECRET_ACCESS_KEY`; ensure `ECR_REPO` and `FUNCTION_NAME` in `.github/workflows/deploy.yml` match your ECR repo and Lambda; run the workflow (push to main or dispatch) to build/push image and update Lambda.
+- Lambda handler: `handler.main_handler` handles SNS/S3 (event) and HTTP (Function URL/API Gateway). Role needs `secretsmanager:GetSecretValue`, S3 read/write, CloudWatch Logs.
+- HTTP test: POST `{"prompt":"..."}` to the Function URL; expect JSON with `image_base64`. CLI: `API_URL=<function-url> cargo run -- "your prompt"` → outputs `out.png`.
+- Local helper smoke test: set `OPENAI_API_KEY`, run the snippet in `M2_AI_Helper.md` to generate `out.png`.
+- CloudWatch: logs in `/aws/lambda/<function>`; add metric filters/alarms for Errors/Duration/Throttles as needed.
+
 ## TODO
 - ~~Create S3 Buckets for image uploads~~
 - Set up Lambda Functions for image processing
