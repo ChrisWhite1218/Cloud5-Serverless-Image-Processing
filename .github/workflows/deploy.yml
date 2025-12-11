@@ -43,7 +43,7 @@ jobs:
             -t "${IMAGE_URI}" \
             -t "${IMAGE_URI_LATEST}" \
             -f lambda/generate-image-lambda/Dockerfile \
-            lambda/generate-image-lambda
+            .
 
           docker push "${IMAGE_URI}"
           docker push "${IMAGE_URI_LATEST}"

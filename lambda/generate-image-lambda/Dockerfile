@@ -10,7 +10,6 @@ COPY lambda/generate-image-lambda/pyproject.toml ${LAMBDA_TASK_ROOT}/
 RUN uv sync
 # copy function code
 COPY lambda/generate-image-lambda/handler.py ${LAMBDA_TASK_ROOT}/
-COPY lambda/generate-image-lambda/secret_loader.py ${LAMBDA_TASK_ROOT}/
 COPY ai_helper/ ${LAMBDA_TASK_ROOT}/ai_helper/
 # sync the project
 RUN uv sync --locked --no-install-project --no-editable
