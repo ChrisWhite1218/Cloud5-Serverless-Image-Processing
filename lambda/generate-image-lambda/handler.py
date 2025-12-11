@@ -29,10 +29,20 @@ def ensure_openai_key():
     region_name = os.getenv("AWS_REGION", "us-east-1")
     client = boto3.client("secretsmanager", region_name=region_name)
     resp = client.get_secret_value(SecretId=secret_name)
-    if "SecretString" in resp:
-        os.environ["OPENAI_API_KEY"] = resp["SecretString"]
+    secret_value = resp.get("SecretString")
+    if not secret_value and "SecretBinary" in resp:
+        secret_value = resp["SecretBinary"].decode("utf-8")
+    if secret_value:
+        # If the secret is JSON like {"api_key": "..."} or {"key": "..."}, extract it.
+        try:
+            parsed = json.loads(secret_value)
+            if isinstance(parsed, dict):
+                secret_value = parsed.get("api_key") or parsed.get("key") or secret_value
+        except json.JSONDecodeError:
+            pass
+        os.environ["OPENAI_API_KEY"] = secret_value
     else:
-        os.environ["OPENAI_API_KEY"] = resp["SecretBinary"].decode("utf-8")
+        raise RuntimeError("Secret value is empty or missing.")
 
 def api_handler(event, context):
     """
