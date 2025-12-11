@@ -55,10 +55,7 @@ jobs:
 
           echo "IMAGE_URI=${IMAGE_URI}" >> $GITHUB_ENV
 
-      - name: Update Lambda to new image
-        if: env.FUNCTION_NAME != ''
-        run: |
-          aws lambda update-function-code \
-            --function-name "${FUNCTION_NAME}" \
-            --image-uri "${IMAGE_URI}"
+      # Skip Lambda update here if the function is managed in another account.
+      # Share the pushed image URI with the Lambda owner to update manually:
+      # ${IMAGE_URI}
 
