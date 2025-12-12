@@ -73,13 +73,11 @@ Develop a web application that allows users to upload and process images.
 
 ## TODO
 - ~~Create S3 Buckets for image uploads~~
-- Set up Lambda Functions for image processing
+- ~~Set up Lambda Functions for image processing~~
 - - ~~Implement Lambda code~~
-- - Create Lambda in AWS
-- - Modify lambda-image-processor role to have access to cloud5-serverless-image-processing bucket
-- - Subscribe Lambda to SNS topic
+- - ~~Create Lambda in AWS~~
+- - ~~Modify lambda-image-processor role to have access to cloud5-serverless-image-processing bucket~~
+- - ~~Subscribe Lambda to SNS topic~~
 - ~~Configure S3 Bucket to send notifications to SNS topic when files are uploaded~~
-- Set up CLI for users to interact with the system
-- Set up CloudWatch
-- Set up CloudFront
-- Step Functions
+- ~~Set up CLI for users to interact with the system~~
+- ~~Set up CloudWatch~~
